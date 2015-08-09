@@ -54,6 +54,8 @@ public class LocationService extends Service {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, DEFAULT_TIME,
                 DEFAULT_DISTANCE, locationListener);
 
+        // Little git test
+
         return START_NOT_STICKY;
     }
 
