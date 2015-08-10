@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 
 /**
+ * Created by zara and javeed on 09.08.2015.
+ *
  * The MainActivity
  *
  * */

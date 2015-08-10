@@ -12,6 +12,8 @@ import android.os.IBinder;
 
 
 /**
+ * Created by zara and javeed on 09.08.2015.
+ *
  * The LocationService provides all the functionality to update the current location of the user
  * and to call the alarm, if the user is close enough to his/her duration.
  *
@@ -47,14 +49,14 @@ public class LocationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
         currentLocation = new Location(locationManager.GPS_PROVIDER);
+
 
         callLocationListener();
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, DEFAULT_TIME,
                 DEFAULT_DISTANCE, locationListener);
-
-        // Little git test
 
         return START_NOT_STICKY;
     }

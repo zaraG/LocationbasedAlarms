@@ -5,7 +5,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 
 /**
- * Created by zara on 09.08.2015.
+ * Created by zara and javeed on 09.08.2015.
  *
  * The LocationServiceConnection class is responsible for binding the LocationService with the
  * Activities.
@@ -13,11 +13,12 @@ import android.os.IBinder;
  */
 public class LocationServiceConnection implements ServiceConnection {
 
-    private boolean sBound = false;
-    private  LocationService sService = new LocationService();
+    private boolean sBound;
+    private  LocationService sService;
 
     public LocationServiceConnection() {
-
+        sBound = false;
+        sService = new LocationService();
     }
 
     @Override
