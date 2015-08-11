@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
     private TextView destinationTxt;
 
     private LocationService sService;
-    private Boolean sBound;
+    private boolean sBound = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         sService = null;
-        sBound = false;
 
         addLocationBtn = (Button)findViewById(R.id.addLocation);
         addLocationBtn.setOnClickListener(new View.OnClickListener() {
@@ -42,6 +41,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), MapsActivity.class));
                 startService(new Intent(getApplicationContext(), LocationService.class));
+
             }
         });
 
@@ -49,8 +49,11 @@ public class MainActivity extends Activity {
         startApplicationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(getApplicationContext(), AlarmActivity.class));
                 // TODO start the application - some how start the alarm
+                sService.setStartBtnClicked(true);
+                startActivity(new Intent(Intent.ACTION_MAIN).
+                        addCategory(Intent.CATEGORY_HOME).
+                        setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             }
         });
 

@@ -19,6 +19,8 @@ import android.os.IBinder;
  * */
 public class LocationService extends Service {
 
+    private final IBinder mBinder = new LocationBinder();
+
     /** Minimum distance and time.
      * TODO - if time let the user edit this values.
      * Important for different travelling choices,
@@ -31,13 +33,14 @@ public class LocationService extends Service {
     public static final int DEFAULT_TIME = 1000;//5000 * 60;
 
     // the current location
-    private Location currentLocation, destination;
+    private Location currentLocation = null, destination = null;
 
     private LocationListener locationListener;
     private LocationManager locationManager;
 
-    public LocationService() {
+    private boolean alarmOn = false, startBtnClicked = false;
 
+    public LocationService() {
 
     }
 
@@ -49,7 +52,7 @@ public class LocationService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        return new LocationBinder();
+        return mBinder;
     }
 
     @Override
@@ -57,7 +60,6 @@ public class LocationService extends Service {
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         currentLocation = new Location(LocationManager.GPS_PROVIDER);
-        destination = null;
 
         callLocationListener();
 
@@ -73,9 +75,14 @@ public class LocationService extends Service {
             public void onLocationChanged(Location location) {
                 currentLocation = location;
 
-                // if close by destination start the alarm
-                if(currentLocation.distanceTo(destination) <= 500) {
-                    startActivity(new Intent(getApplicationContext(), AlarmActivity.class));
+                if(startBtnClicked) {
+                    if (currentLocation != null && destination != null && currentLocation.
+                            distanceTo(destination) <= DEFAULT_DISTANCE && !alarmOn) {
+                        startActivity(new Intent(getApplicationContext(), AlarmActivity.class)
+                                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                        alarmOn = true;
+                        startBtnClicked = false;
+                    }
                 }
             }
 
@@ -96,10 +103,6 @@ public class LocationService extends Service {
         };
     }
 
-    protected Location getCurrentLocation() {
-        return currentLocation;
-    }
-
     public Location getDestination() {
         return destination;
     }
@@ -108,5 +111,7 @@ public class LocationService extends Service {
         this.destination = destination;
     }
 
-
+    public void setStartBtnClicked(boolean clicked) {
+        startBtnClicked = clicked;
+    }
 }

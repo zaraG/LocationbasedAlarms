@@ -42,6 +42,8 @@ public class AlarmActivity extends Activity {
 
         turnOffSwtch = (Switch)findViewById(R.id.turnOffSwtch);
         turnOffSwtch.setChecked(true);
+        turnOffSwtch.setTextOn("on");
+        turnOffSwtch.setTextOff("off");
 
         turnOffSwtch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
