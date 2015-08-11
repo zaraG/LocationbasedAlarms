@@ -14,7 +14,8 @@ import android.os.IBinder;
 public class LocationServiceConnection implements ServiceConnection {
 
     private boolean sBound;
-    private  LocationService sService;
+
+    private static LocationService sService;
 
     public LocationServiceConnection() {
         sBound = false;
@@ -38,7 +39,8 @@ public class LocationServiceConnection implements ServiceConnection {
         return sBound;
     }
 
-    protected LocationService getSService() {
+    // TODO should not be static
+    protected static LocationService getSService() {
         return sService;
     }
 }

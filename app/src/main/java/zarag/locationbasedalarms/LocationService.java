@@ -32,13 +32,19 @@ public class LocationService extends Service {
     public static final int DEFAULT_TIME = 5000 * 60;
 
     // the current location
-    private static Location currentLocation;
+    private Location currentLocation, destination;
 
     private LocationListener locationListener;
     private LocationManager locationManager;
 
     public LocationService() {
 
+    }
+
+    public class LocationBinder extends Binder {
+        public LocationService getLocationService() {
+            return LocationService.this;
+        }
     }
 
     @Override
@@ -50,8 +56,8 @@ public class LocationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-        currentLocation = new Location(locationManager.GPS_PROVIDER);
-
+        currentLocation = new Location(LocationManager.GPS_PROVIDER);
+        destination = null;
 
         callLocationListener();
 
@@ -89,9 +95,13 @@ public class LocationService extends Service {
         return currentLocation;
     }
 
-    public class LocationBinder extends Binder {
-        public LocationService getLocationService() {
-            return LocationService.this;
-        }
+    public Location getDestination() {
+        return destination;
     }
+
+    public void setDestination(Location destination) {
+        this.destination = destination;
+    }
+
+
 }

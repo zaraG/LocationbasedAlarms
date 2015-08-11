@@ -1,5 +1,7 @@
 package zarag.locationbasedalarms;
 
+import android.content.Intent;
+import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,7 +41,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMapFragment.getMapAsync(this);
 
         sConnection = new LocationServiceConnection();
-        sService = sConnection.getSService();
+        sService = LocationServiceConnection.getSService();
     }
 
     @Override
@@ -59,10 +61,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (marker != null) {
                     marker.remove();
                 }
+
+                // set new marker
                 marker = mMap.addMarker(new MarkerOptions()
                         .position(latLng)
                         .draggable(true));
                 marker.setDraggable(true);
+
+                // set destination
+                Location destination = new Location("Destination");
+                destination.setLatitude(marker.getPosition().latitude);
+                destination.setLongitude(marker.getPosition().longitude);
+                sService.setDestination(destination);
+
+                // switch to main screen
+                startActivity(new Intent(getApplicationContext(), MainActivity.class).
+                        setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
             }
         });
     }

@@ -3,5 +3,4 @@
     android:layout_height="match_parent" android:id="@+id/map"
     tools:context="zarag.locationbasedalarms.MapsActivity"
     android:name="com.google.android.gms.maps.SupportMapFragment"
-    android:longClickable="true"
-    android:clickable="true"/>
+    android:longClickable="true" />
