@@ -19,29 +19,27 @@ import android.os.IBinder;
  * */
 public class LocationService extends Service {
 
-    private final IBinder mBinder = new LocationBinder();
-
-    /** Minimum distance and time.
-     * TODO - if time let the user edit this values.
-     * Important for different travelling choices,
-     * e.g. by train/ car, bike or foot. */
-
     // 0.5 km
-    public static final int DEFAULT_DISTANCE = 10;
+    public static final int DEFAULT_DISTANCE = 500;
 
     // 5 minutes
-    public static final int DEFAULT_TIME = 1000;//5000 * 60;
+    public static final int DEFAULT_TIME = 1000 * 60;
 
-    // the current location
-    private Location currentLocation = null, destination = null;
+    private final IBinder mBinder;
+
+    private Location currentLocation, destination;
 
     private LocationListener locationListener;
     private LocationManager locationManager;
 
-    private boolean alarmOn = false, startBtnClicked = false;
+    private boolean alarmOn, startBtnClicked;
 
     public LocationService() {
-
+        mBinder = new LocationBinder();
+        currentLocation = null;
+        destination = null;
+        startBtnClicked = false;
+        alarmOn = false;
     }
 
     public class LocationBinder extends Binder {
