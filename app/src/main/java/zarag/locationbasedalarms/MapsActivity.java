@@ -1,7 +1,11 @@
 package zarag.locationbasedalarms;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.location.Location;
+import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,10 +30,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker marker;
 
     private SupportMapFragment mMapFragment;
-
-    private LocationServiceConnection sConnection;
+    private Location destination;
 
     private LocationService sService;
+    private boolean sBound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +43,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMapFragment = SupportMapFragment.newInstance();
         mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mMapFragment.getMapAsync(this);
-
-        sConnection = new LocationServiceConnection();
-        sService = LocationServiceConnection.getSService();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
+        destination = new Location("Destination");
+        sBound = false;
     }
 
     @Override
@@ -69,7 +67,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 marker.setDraggable(true);
 
                 // set destination
-                Location destination = new Location("Destination");
                 destination.setLatitude(marker.getPosition().latitude);
                 destination.setLongitude(marker.getPosition().longitude);
                 sService.setDestination(destination);
@@ -80,4 +77,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bindService(new Intent(this, LocationService.class), serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (sBound) {
+            unbindService(serviceConnection);
+        }
+    }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            LocationService.LocationBinder binder = (LocationService.LocationBinder) service;
+            sService = binder.getLocationService();
+            sBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            sBound = false;
+            sService = null;
+        }
+    };
 }

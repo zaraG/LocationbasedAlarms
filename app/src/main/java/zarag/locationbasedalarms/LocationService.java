@@ -39,6 +39,7 @@ public class LocationService extends Service {
 
     public LocationService() {
 
+
     }
 
     public class LocationBinder extends Binder {
