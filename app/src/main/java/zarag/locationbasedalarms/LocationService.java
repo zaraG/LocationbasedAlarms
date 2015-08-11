@@ -10,7 +10,6 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 
-
 /**
  * Created by zara and javeed on 09.08.2015.
  *
@@ -25,11 +24,11 @@ public class LocationService extends Service {
      * Important for different travelling choices,
      * e.g. by train/ car, bike or foot. */
 
-    // 0.5 meters
-    public static final int DEFAULT_DISTANCE = 500;
+    // 0.5 km
+    public static final int DEFAULT_DISTANCE = 10;
 
     // 5 minutes
-    public static final int DEFAULT_TIME = 5000 * 60;
+    public static final int DEFAULT_TIME = 1000;//5000 * 60;
 
     // the current location
     private Location currentLocation, destination;
@@ -73,6 +72,11 @@ public class LocationService extends Service {
             @Override
             public void onLocationChanged(Location location) {
                 currentLocation = location;
+
+                // if close by destination start the alarm
+                if(currentLocation.distanceTo(destination) <= 500) {
+                    startActivity(new Intent(getApplicationContext(), AlarmActivity.class));
+                }
             }
 
             @Override
