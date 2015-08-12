@@ -20,11 +20,14 @@ import android.widget.Toast;
  * */
 public class LocationService extends Service {
 
-    // 0.5 km
-    public static final int DEFAULT_DISTANCE = 500;
+    // 1 km
+    public static final int DEFAULT_DISTANCE = 1000;
 
-    // 5 minutes
-    public static final int DEFAULT_TIME = 1000 * 30;
+    // 3 minutes
+    public static final int DEFAULT_TIME = 3000 * 60;
+
+    // 3 km
+    public static final int DEFAULT_RADIUS = 3000;
 
     private final IBinder mBinder;
 
@@ -77,7 +80,7 @@ public class LocationService extends Service {
 
                 if(startBtnClicked) {
                     if (currentLocation != null && destination != null && currentLocation.
-                            distanceTo(destination) <= DEFAULT_DISTANCE && !alarmOn) {
+                            distanceTo(destination) <= DEFAULT_RADIUS && !alarmOn) {
                         startActivity(new Intent(getApplicationContext(), AlarmActivity.class)
                                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                         alarmOn = true;

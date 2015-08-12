@@ -84,7 +84,8 @@ public class MainActivity extends Activity {
         List<Address> l;
         String address = "";
         try {
-            l = geo.getFromLocation(sService.getDestination().getLatitude(), sService.getDestination().getLongitude(), 1);
+            l = geo.getFromLocation(sService.getDestination().getLatitude(),
+                    sService.getDestination().getLongitude(), 1);
             for(int i = 0; i <  l.get(0).getMaxAddressLineIndex(); i++) {
                 address += (l.get(0).getAddressLine(i) + " ");
             }
