@@ -5,11 +5,16 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by zara and javeed on 09.08.2015.
@@ -68,10 +73,33 @@ public class MainActivity extends Activity {
         if(sBound && sService.getDestination() != null) {
             startApplicationBtn.setEnabled(true);
 
-            destinationTxt.setText("Destination: "
-                    + sService.getDestination().toString()
-                    + "\n please press start to set up the alarm!");
+            destinationTxt.setText(sService.getDestination().getProvider()
+                    + " " + locationToAdress()
+                    + "\nPlease press start to set up the alarm!");
         }
+    }
+
+    private String locationToAdress() {
+        Geocoder geo = new Geocoder(this);
+        List<Address> l;
+        String address = "";
+        try {
+            l = geo.getFromLocation(sService.getDestination().getLatitude(), sService.getDestination().getLongitude(), 1);
+            for(int i = 0; i <  l.get(0).getMaxAddressLineIndex(); i++) {
+                address += (l.get(0).getAddressLine(i) + " ");
+            }
+        } catch (IOException e) {
+            Log.e("GeocoderError: ", "For some reason the geocoder conversion did not worked properly. "
+                    + "Please check your internet connection.", e);
+        }
+
+        // in case it can´t find the specific address
+        if(address.isEmpty()) {
+            address = String.valueOf(sService.getDestination().getLatitude())
+                    + String.valueOf(sService.getDestination().getLongitude());
+        }
+
+        return address;
     }
 
     @Override

@@ -3,7 +3,6 @@ package zarag.locationbasedalarms;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -34,7 +33,6 @@ public class AlarmActivity extends Activity {
         setContentView(R.layout.activity_alarm);
 
         wakeUpTxt = (TextView)findViewById(R.id.wakeUpTxt);
-        // TODO maybe add the location-name later
         wakeUpTxt.setText(WAKE_UP_TEXT);
 
         mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.wakemeup);

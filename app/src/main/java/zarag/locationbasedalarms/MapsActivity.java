@@ -65,6 +65,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .draggable(true));
                 marker.setDraggable(true);
 
+                LocationService.setAlarmOff();
+
                 // set destination
                 destination.setLatitude(marker.getPosition().latitude);
                 destination.setLongitude(marker.getPosition().longitude);

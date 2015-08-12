@@ -9,6 +9,7 @@ import android.location.LocationManager;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.widget.Toast;
 
 /**
  * Created by zara and javeed on 09.08.2015.
@@ -23,7 +24,7 @@ public class LocationService extends Service {
     public static final int DEFAULT_DISTANCE = 500;
 
     // 5 minutes
-    public static final int DEFAULT_TIME = 1000 * 60;
+    public static final int DEFAULT_TIME = 1000 * 30;
 
     private final IBinder mBinder;
 
@@ -32,7 +33,8 @@ public class LocationService extends Service {
     private LocationListener locationListener;
     private LocationManager locationManager;
 
-    private boolean alarmOn, startBtnClicked;
+    private static boolean alarmOn;
+    private boolean startBtnClicked;
 
     public LocationService() {
         mBinder = new LocationBinder();
@@ -62,7 +64,7 @@ public class LocationService extends Service {
         callLocationListener();
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, DEFAULT_TIME,
-                DEFAULT_DISTANCE, locationListener);
+               DEFAULT_DISTANCE, locationListener);
 
         return START_NOT_STICKY;
     }
@@ -96,7 +98,7 @@ public class LocationService extends Service {
 
             @Override
             public void onProviderDisabled(String provider) {
-                // auto-generated, can not be deleted
+                Toast.makeText(getApplicationContext(), "Please turn on GPS", Toast.LENGTH_SHORT).show();
             }
         };
     }
@@ -111,5 +113,9 @@ public class LocationService extends Service {
 
     public void setStartBtnClicked(boolean clicked) {
         startBtnClicked = clicked;
+    }
+
+    public static void setAlarmOff() {
+        alarmOn = false;
     }
 }
